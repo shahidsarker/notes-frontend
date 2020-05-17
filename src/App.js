@@ -72,6 +72,7 @@ const App = () => {
   };
 
   const addNote = (noteObject) => {
+    noteFormRef.current.toggleVisibility();
     noteService
       .create(noteObject)
       .then((returnedNote) => {
@@ -116,8 +117,10 @@ const App = () => {
     );
   };
 
+  const noteFormRef = React.createRef();
+
   const noteForm = () => (
-    <Toggleable buttonLabel="new note">
+    <Toggleable buttonLabel="new note" ref={noteFormRef}>
       <NoteForm createNote={addNote} />
     </Toggleable>
   );
