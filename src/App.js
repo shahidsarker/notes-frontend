@@ -8,7 +8,9 @@ import Note from "./components/Note";
 import noteService from "./services/notes";
 
 import Notification from "./components/Notification";
+import Toggleable from "./components/Toggleable";
 import LoginForm from "./components/LoginForm";
+import NoteForm from "./components/NoteForm";
 
 const Footer = () => {
   const footerStyle = {
@@ -33,7 +35,6 @@ const App = () => {
   const [username, setUsername] = useState("");
   const [password, setPassword] = useState("");
   const [user, setUser] = useState(null);
-  const [loginVisible, setLoginVisible] = useState(false);
 
   useEffect(() => {
     noteService.getAll().then((initialNotes) => {
@@ -116,33 +117,27 @@ const App = () => {
   };
 
   const loginForm = () => {
-    const hideWhenVisible = { display: loginVisible ? "none" : "" };
-    const showWhenVisible = { display: loginVisible ? "" : "none" };
-
     return (
-      <div>
-        <div style={hideWhenVisible}>
-          <button onClick={() => setLoginVisible(true)}>log in</button>
-        </div>
-        <div style={showWhenVisible}>
-          <LoginForm
-            username={username}
-            password={password}
-            handleUsernameChange={({ target }) => setUsername(target.value)}
-            handlePasswordChange={({ target }) => setPassword(target.value)}
-            handleSubmit={handleLogin}
-          />
-          <button onClick={() => setLoginVisible(false)}>cancel</button>
-        </div>
-      </div>
+      <Toggleable buttonLabel="login">
+        <LoginForm
+          username={username}
+          password={password}
+          handleUsernameChange={({ target }) => setUsername(target.value)}
+          handlePasswordChange={({ target }) => setPassword(target.value)}
+          handleSubmit={handleLogin}
+        />
+      </Toggleable>
     );
   };
 
   const noteForm = () => (
-    <form onSubmit={addNote}>
-      <input value={newNote} onChange={handleNoteChange} />
-      <button type="submit">save</button>
-    </form>
+    <Toggleable buttonLabel="new note">
+      <NoteForm
+        onSubmit={addNote}
+        handleChange={handleNoteChange}
+        value={newNote}
+      />
+    </Toggleable>
   );
 
   return (
