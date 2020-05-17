@@ -29,7 +29,6 @@ const Footer = () => {
 
 const App = () => {
   const [notes, setNotes] = useState([]);
-  const [newNote, setNewNote] = useState("");
   const [showAll, setShowAll] = useState(true);
   const [errorMessage, setErrorMessage] = useState(null);
   const [username, setUsername] = useState("");
@@ -72,26 +71,13 @@ const App = () => {
       });
   };
 
-  const addNote = (e) => {
-    e.preventDefault();
-
-    const noteObject = {
-      content: newNote,
-      date: new Date(),
-      important: Math.random() > 0.5,
-    };
-
+  const addNote = (noteObject) => {
     noteService
       .create(noteObject)
       .then((returnedNote) => {
         setNotes(notes.concat(returnedNote));
-        setNewNote("");
       })
       .catch((err) => console.log(err));
-  };
-
-  const handleNoteChange = (e) => {
-    setNewNote(e.target.value);
   };
 
   const notesToShow = showAll
@@ -132,11 +118,7 @@ const App = () => {
 
   const noteForm = () => (
     <Toggleable buttonLabel="new note">
-      <NoteForm
-        onSubmit={addNote}
-        handleChange={handleNoteChange}
-        value={newNote}
-      />
+      <NoteForm createNote={addNote} />
     </Toggleable>
   );
 
