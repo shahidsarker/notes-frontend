@@ -9,7 +9,7 @@ const NoteForm = ({ createNote }) => {
 
   const addNote = (e) => {
     e.preventDefault()
-    createNote({ content: newNote, important: Math.random() > 0.5 })
+    createNote({ content: newNote, important: false })
     setNewNote('')
   }
 
